@@ -46,16 +46,28 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("My File App"),
         ),
-        body: Column(
-          children: [
-            Question(
-              questions[_questionIndex]['questionText'],
-            ),
-            ...(questions[_questionIndex]['answers'] as List)
-                .map((answer) => Answer(_answerQuestion, answer))
-                .toList()
-          ],
-        ),
+        body: _questionIndex < questions.length
+            ? Column(
+                children: [
+                  Question(
+                    questions[_questionIndex]['questionText'],
+                  ),
+                  ...(questions[_questionIndex]['answers'] as List)
+                      .map((answer) => Answer(_answerQuestion, answer))
+                      .toList()
+                ],
+              )
+            : Column(children: [
+                Text('You completed the quiz'),
+                RaisedButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  child: Text("Go Back"),
+                  onPressed: () => {
+                    setState(() => {_questionIndex = 0})
+                  },
+                )
+              ]),
       ),
     );
   }
