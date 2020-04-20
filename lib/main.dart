@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,9 +26,19 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> questions = [
-      "What is your fav color?",
-      "What is your fav animal?"
+    List<Map<String, Object>> questions = [
+      {
+        "questionText": "What is your fav color?",
+        'answers': ['black', 'red', 'green', 'white'],
+      },
+      {
+        "questionText": "What is your fav animal?",
+        'answers': ['rabbit', 'lion'],
+      },
+      {
+        "questionText": "What is your fav food?",
+        'answers': ['chicken', 'pork'],
+      },
     ];
 
     return MaterialApp(
@@ -38,20 +49,11 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             Question(
-              questions[_questionIndex],
+              questions[_questionIndex]['questionText'],
             ),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: _answerQuestion,
-            ),
+            ...(questions[_questionIndex]['answers'] as List)
+                .map((answer) => Answer(_answerQuestion, answer))
+                .toList()
           ],
         ),
       ),
