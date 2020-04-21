@@ -16,14 +16,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // ignore: must_be_immutable
   var _questionIndex = 0; // ignore: must_be_immutable
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
     setState(() {
       _questionIndex++;
     });
   }
 
   void _returnToHome() {
+    _totalScore = 0;
     setState(() {
       _questionIndex = 0;
     });
@@ -34,15 +37,26 @@ class _MyAppState extends State<MyApp> {
     List<Map<String, Object>> _questions = [
       {
         "questionText": "What is your fav color?",
-        'answers': ['black', 'red', 'green', 'white'],
+        'answers': [
+          {'text': 'black', 'score': 10},
+          {'text': 'blue', 'score': 2},
+          {'text': 'white', 'score': 5},
+          {'text': 'red', 'score': 0},
+        ],
       },
       {
         "questionText": "What is your fav animal?",
-        'answers': ['rabbit', 'lion'],
+        'answers': [
+          {'text': 'rabbit', 'score': 4},
+          {'text': 'lion', 'score': 8},
+        ],
       },
       {
         "questionText": "What is your fav food?",
-        'answers': ['chicken', 'pork'],
+        'answers': [
+          {'text': 'chicken', 'score': 8},
+          {'text': 'pork', 'score': 6},
+        ]
       },
     ];
 
@@ -63,6 +77,7 @@ class _MyAppState extends State<MyApp> {
                 )
               : Result(
                   returnToHome: _returnToHome,
+                  totalResult: _totalScore,
                 )),
     );
   }
