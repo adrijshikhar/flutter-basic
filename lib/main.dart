@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,12 +21,17 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _questionIndex++;
     });
-    print(_questionIndex);
+  }
+
+  void _returnToHome() {
+    setState(() {
+      _questionIndex = 0;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, Object>> questions = [
+    List<Map<String, Object>> _questions = [
       {
         "questionText": "What is your fav color?",
         'answers': ['black', 'red', 'green', 'white'],
@@ -43,32 +48,22 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("My File App"),
-        ),
-        body: _questionIndex < questions.length
-            ? Column(
-                children: [
-                  Question(
-                    questions[_questionIndex]['questionText'],
-                  ),
-                  ...(questions[_questionIndex]['answers'] as List)
-                      .map((answer) => Answer(_answerQuestion, answer))
-                      .toList()
-                ],
-              )
-            : Column(children: [
-                Text('You completed the quiz'),
-                RaisedButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  child: Text("Go Back"),
-                  onPressed: () => {
-                    setState(() => {_questionIndex = 0})
-                  },
+          appBar: AppBar(
+            title: Text("My File App"),
+          ),
+          body: _questionIndex < _questions.length
+              ? Column(
+                  children: [
+                    Quiz(
+                      answerHandler: _answerQuestion,
+                      questionIndex: _questionIndex,
+                      questions: _questions,
+                    ),
+                  ],
                 )
-              ]),
-      ),
+              : Result(
+                  returnToHome: _returnToHome,
+                )),
     );
   }
 }
